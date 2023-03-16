@@ -11,7 +11,9 @@ class HomeController extends GetxController {
   final tasks = <Task>[].obs;
   final fonmKey = GlobalKey<FormState>();
   final editController = TextEditingController();
+  final deleteing = false.obs;
   final chipIndex = 0.obs;
+  final task = Rx<Task?>(null);
 
   @override
   void onInit() {
@@ -22,6 +24,7 @@ class HomeController extends GetxController {
 
   @override
   void onClose() {
+    editController.dispose();
     super.onClose();
   }
 
@@ -31,7 +34,19 @@ class HomeController extends GetxController {
     return true;
   }
 
+  void changeDeleting(bool value) {
+    deleteing.value = value;
+  }
+
   void changeChipIndex(int value) {
     chipIndex.value = value;
+  }
+
+  void deleteTask(Task task) {
+    tasks.remove(task);
+  }
+
+  changeTask(Task select) {
+    task.value = select;
   }
 }

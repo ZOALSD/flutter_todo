@@ -4,15 +4,15 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
 class Task extends Equatable {
-  final String? title;
-  final int? icon;
-  final String? color;
+  final String title;
+  final int icon;
+  final String color;
   final List<dynamic>? todos;
   const Task({
     required this.title,
     required this.icon,
     required this.color,
-    required this.todos,
+    this.todos,
   });
 
   Task copyWith({
@@ -40,11 +40,10 @@ class Task extends Equatable {
 
   factory Task.fromMap(Map<String, dynamic> map) {
     return Task(
-      title: map['title'] as String,
-      icon: map['icon'].toInt() as int,
-      color: map['color'] as String,
-      todos: map['todos'] as List<dynamic>,
-    );
+        title: map['title'] as String,
+        icon: map['icon'].toInt() as int,
+        color: map['color'] as String,
+        todos: map['todos']);
   }
 
   String toJson() => json.encode(toMap());

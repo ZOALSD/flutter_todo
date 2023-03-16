@@ -3,9 +3,11 @@ import 'package:get/get.dart';
 import 'package:todo/core/utils/extensions.dart';
 import 'package:todo/modules/home/controller.dart';
 import 'package:todo/modules/home/widgets/add_card.dart';
+import 'package:todo/modules/home/widgets/task_card.dart';
 
 class Home extends GetView<HomeController> {
-  const Home({Key? key}) : super(key: key);
+  // final homeController = Get.find<HomeController>();
+  Home({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +25,18 @@ class Home extends GetView<HomeController> {
             ),
           ),
         ),
-        GridView.count(
-          crossAxisCount: 2,
-          shrinkWrap: true,
-          physics: const ClampingScrollPhysics(),
-          children: [AddCard()],
+        Obx(
+          () => GridView.count(
+            crossAxisCount: 2,
+            shrinkWrap: true,
+            physics: const ClampingScrollPhysics(),
+            children: [
+              ...controller.tasks
+                  .map((element) => TaskCard(task: element))
+                  .toList(),
+              AddCard()
+            ],
+          ),
         )
       ],
     )));

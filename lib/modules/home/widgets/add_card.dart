@@ -1,8 +1,10 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:todo/core/utils/extensions.dart';
 import 'package:todo/core/values/colors.dart';
+import 'package:todo/data/models/task.dart';
 import 'package:todo/modules/home/controller.dart';
 import 'package:todo/widgets/icons.dart';
 
@@ -68,13 +70,30 @@ class AddCard extends StatelessWidget {
                               borderRadius: BorderRadius.circular(20)),
                           minimumSize: const Size(150, 40)),
                       onPressed: () {
-                        if (homeController.fonmKey.currentState!.validate()) {}
+                        if (homeController.fonmKey.currentState!.validate()) {
+                          int icon = icons[homeController.chipIndex.value]
+                              .icon!
+                              .codePoint;
+                          String color = icons[homeController.chipIndex.value]
+                              .color!
+                              .toHex();
+                          var task = Task(
+                              title: homeController.editController.text,
+                              icon: icon,
+                              color: color);
+                          Get.back();
+                          homeController.addTask(task)
+                              ? EasyLoading.showSuccess("Create success")
+                              : EasyLoading.showError("Duplicated task");
+                        }
                       },
                       child: const Text("Confirm"))
                 ],
               ),
             ),
           );
+          homeController.editController.clear();
+          homeController.changeChipIndex(0);
         },
         child: DottedBorder(
             dashPattern: const [8, 4],

@@ -25,6 +25,12 @@ class HomeController extends GetxController {
     super.onClose();
   }
 
+  bool addTask(Task task) {
+    if (tasks.contains(task)) return false;
+    tasks.add(task);
+    return true;
+  }
+
   void changeChipIndex(int value) {
     chipIndex.value = value;
   }

@@ -27,7 +27,7 @@ class App extends StatelessWidget {
       ),
       initialBinding: HomeBinding(),
       builder: EasyLoading.init(),
-      home: const Home(),
+      home: Home(),
     );
   }
 }

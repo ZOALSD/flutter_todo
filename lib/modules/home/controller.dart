@@ -14,6 +14,8 @@ class HomeController extends GetxController {
   final deleteing = false.obs;
   final chipIndex = 0.obs;
   final task = Rx<Task?>(null);
+  final todoingTask = <Todo>[].obs;
+  final doneTask = <Todo>[].obs;
 
   @override
   void onInit() {
@@ -46,7 +48,35 @@ class HomeController extends GetxController {
     tasks.remove(task);
   }
 
-  changeTask(Task select) {
+  changeTask(Task? select) {
     task.value = select;
+  }
+
+  changeTodo(Todo todo) {
+    todoingTask.clear();
+    doneTask.clear();
+    if (todo.done!) {
+      doneTask.add(todo);
+    } else {
+      todoingTask.add(todo);
+    }
+  }
+
+  bool updateTask(Task task, String title) {
+    List<Todo> todos = task.todo ?? [];
+    if (containeTodo(todos, title)) {
+      return false;
+    }
+    var todo = Todo(title: title, done: false);
+    todos.add(todo);
+    var newTask = task.copyWith(todo: todos);
+    int oldIdx = tasks.indexOf(task);
+    tasks[oldIdx] = newTask;
+    tasks.refresh();
+    return true;
+  }
+
+  bool containeTodo(List todos, title) {
+    return todos.any((element) => element == title);
   }
 }

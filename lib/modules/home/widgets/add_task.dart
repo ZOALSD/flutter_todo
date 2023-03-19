@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:todo/core/utils/extensions.dart';
 import 'package:todo/modules/home/controller.dart';
@@ -20,10 +21,32 @@ class AddTask extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                      onPressed: () => Get.back(),
+                      onPressed: () {
+                        Get.back();
+                        homeController.editController.clear();
+                        homeController.changeTask(null);
+                      },
                       icon: const Icon(Icons.close)),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      if (homeController.fonmKey.currentState!.validate()) {
+                        if (homeController.task.value == null) {
+                          EasyLoading.showError("Please Select task type");
+                        } else {
+                          bool success = homeController.updateTask(
+                              homeController.task.value!,
+                              homeController.editController.text);
+                          if (success) {
+                            EasyLoading.showSuccess('Todo itme add success');
+                            Get.back();
+                            homeController.changeTask(null);
+                          } else {
+                            EasyLoading.showError('Todo item already exeits');
+                          }
+                          homeController.editController.clear();
+                        }
+                      }
+                    },
                     style: ButtonStyle(
                         overlayColor:
                             MaterialStateProperty.all(Colors.transparent)),

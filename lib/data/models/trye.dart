@@ -43,13 +43,11 @@ class Task extends Equatable {
       title: map['title'] as String,
       icon: map['icon'].toInt() as int,
       color: map['color'] as String,
-      todo: map['todo'] != null
-          ? List<Todo>.from(
-              (map['todo'] as List<dynamic>).map<Todo>(
-                (x) => Todo.fromMap(x as Map<String, dynamic>),
-              ),
-            )
-          : null,
+      todo: List<Todo>.from(
+        (map['todo'] as List<int>).map<Todo>(
+          (x) => Todo.fromMap(x as Map<String, dynamic>),
+        ),
+      ),
     );
   }
 
@@ -83,11 +81,11 @@ class Task extends Equatable {
 }
 
 class Todo {
-  final String? title;
-  final bool? done;
+  final String title;
+  final bool done;
   Todo({
-    this.title,
-    this.done,
+    required this.title,
+    required this.done,
   });
 
   Todo copyWith({

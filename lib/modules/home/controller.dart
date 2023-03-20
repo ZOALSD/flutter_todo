@@ -1,7 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:todo/data/models/task.dart';
-import 'package:todo/data/providers/task/provider.dart';
 import 'package:todo/data/services/storage/repository.dart';
 
 class HomeController extends GetxController {
@@ -9,7 +9,7 @@ class HomeController extends GetxController {
   HomeController({required this.taskRepository});
 
   final tasks = <Task>[].obs;
-  final fonmKey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
   final editController = TextEditingController();
   final deleteing = false.obs;
   final chipIndex = 0.obs;
@@ -52,13 +52,15 @@ class HomeController extends GetxController {
     task.value = select;
   }
 
-  changeTodo(Todo todo) {
+  changeTodo(List<Todo> todos) {
     todoingTask.clear();
     doneTask.clear();
-    if (todo.done!) {
-      doneTask.add(todo);
-    } else {
-      todoingTask.add(todo);
+    for (Todo todo in todos) {
+      if (todo.done!) {
+        doneTask.add(todo);
+      } else {
+        todoingTask.add(todo);
+      }
     }
   }
 
@@ -78,5 +80,20 @@ class HomeController extends GetxController {
 
   bool containeTodo(List todos, title) {
     return todos.any((element) => element == title);
+  }
+
+  bool addTodo(String text) {
+    List<Todo>? todos = tasks[tasks.indexOf(task.value)].todo;
+    if (todos?.any((element) => element.title != text) ?? true) {
+      todoingTask.add(Todo(title: text, done: false));
+      return true;
+    }
+    return false;
+  }
+
+  void updateTodos() {
+    int index = tasks.indexOf(task.value);
+    tasks[index] = tasks[index].copyWith(todo: [...todoingTask, ...doneTask]);
+    tasks.refresh();
   }
 }

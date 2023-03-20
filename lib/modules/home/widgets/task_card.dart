@@ -4,7 +4,7 @@ import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:todo/core/utils/extensions.dart';
 import 'package:todo/data/models/task.dart';
 import 'package:todo/modules/home/controller.dart';
-import 'package:todo/modules/detail/view.dart';
+import 'package:todo/modules/details/view.dart';
 
 class TaskCard extends StatelessWidget {
   final homeController = Get.find<HomeController>();
@@ -19,6 +19,7 @@ class TaskCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         homeController.changeTask(task);
+        homeController.changeTodo(task.todo ?? []);
         Get.to(Details());
       },
       child: Container(

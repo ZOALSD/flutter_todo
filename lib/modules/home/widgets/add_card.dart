@@ -27,7 +27,7 @@ class AddCard extends StatelessWidget {
             radius: 5,
             title: "Task type",
             content: Form(
-              key: homeController.fonmKey,
+              key: homeController.formKey,
               child: Column(
                 children: [
                   Padding(
@@ -70,7 +70,7 @@ class AddCard extends StatelessWidget {
                               borderRadius: BorderRadius.circular(20)),
                           minimumSize: const Size(150, 40)),
                       onPressed: () {
-                        if (homeController.fonmKey.currentState!.validate()) {
+                        if (homeController.formKey.currentState!.validate()) {
                           int icon = icons[homeController.chipIndex.value]
                               .icon!
                               .codePoint;

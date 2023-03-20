@@ -12,7 +12,7 @@ class AddTask extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Form(
-        key: homeController.fonmKey,
+        key: homeController.formKey,
         child: ListView(
           children: [
             Padding(
@@ -29,7 +29,7 @@ class AddTask extends StatelessWidget {
                       icon: const Icon(Icons.close)),
                   TextButton(
                     onPressed: () {
-                      if (homeController.fonmKey.currentState!.validate()) {
+                      if (homeController.formKey.currentState!.validate()) {
                         if (homeController.task.value == null) {
                           EasyLoading.showError("Please Select task type");
                         } else {
@@ -68,8 +68,10 @@ class AddTask extends StatelessWidget {
               child: TextFormField(
                 controller: homeController.editController,
                 decoration: InputDecoration(
-                    focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey.shade400))),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey.shade400),
+                  ),
+                ),
                 autofocus: true,
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {

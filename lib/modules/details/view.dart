@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:todo/core/utils/extensions.dart';
 import 'package:todo/data/models/task.dart';
+import 'package:todo/modules/details/widgets/done_tasks.dart';
+import 'package:todo/modules/details/widgets/todo_tasks.dart';
 import 'package:todo/modules/home/controller.dart';
 
 class Details extends StatelessWidget {
@@ -130,7 +132,9 @@ class Details extends StatelessWidget {
                     return null;
                   },
                 ),
-              )
+              ),
+              TodoTasks(),
+              DoneTasks(),
             ],
           ),
         ),

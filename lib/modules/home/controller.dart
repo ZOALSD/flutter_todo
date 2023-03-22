@@ -96,4 +96,12 @@ class HomeController extends GetxController {
     tasks[index] = tasks[index].copyWith(todo: [...todoingTask, ...doneTask]);
     tasks.refresh();
   }
+
+  void doneTodo({required String title}) {
+    int index = todoingTask.indexWhere((element) => element.title == title);
+    todoingTask.removeAt(index);
+    doneTask.add(Todo(title: title, done: true));
+    todoingTask.refresh();
+    doneTask.refresh();
+  }
 }

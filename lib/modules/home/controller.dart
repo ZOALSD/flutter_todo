@@ -27,6 +27,7 @@ class HomeController extends GetxController {
   @override
   void onClose() {
     editController.dispose();
+    updateTodos();
     super.onClose();
   }
 
@@ -104,4 +105,38 @@ class HomeController extends GetxController {
     todoingTask.refresh();
     doneTask.refresh();
   }
+
+  bool isEmptyTodo({required Task task}) =>
+      (tasks[tasks.indexOf(task)].todo ?? []).isEmpty;
+  ////
+  int totalTodos({required Task task}) =>
+      (tasks[tasks.indexOf(task)].todo ?? []).length;
+  ////
+  int totalDoneTask({required Task task}) {
+    int count = 0;
+    tasks[tasks.indexOf(task)].todo?.forEach((element) {
+      if (element.done ?? false) count++;
+    });
+    return count;
+  }
+
+  DismissStatus dismissItem(
+    String title,
+    DismissDirection direction,
+  ) {
+    int index = doneTask.indexWhere((element) => element.title == title);
+    doneTask.removeAt(index);
+    doneTask.refresh();
+    late DismissStatus dismissStatus;
+    if (direction == DismissDirection.startToEnd) {
+      todoingTask.add(Todo(title: title, done: false));
+      dismissStatus = DismissStatus.archived;
+      todoingTask.refresh();
+    } else {
+      dismissStatus = DismissStatus.deleted;
+    }
+    return dismissStatus;
+  }
 }
+
+enum DismissStatus { deleted, archived }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:todo/core/utils/extensions.dart';
 import 'package:todo/modules/home/controller.dart';
+import 'package:todo/widgets/dismissble_widget.dart';
 
 class DoneTasks extends StatelessWidget {
   DoneTasks({Key? key}) : super(key: key);
@@ -29,24 +31,15 @@ class DoneTasks extends StatelessWidget {
                   ...homeCcontroller.doneTask
                       .map((e) => SizedBox(
                             height: 50,
-                            child: Dismissible(
-                              key: ObjectKey(e),
-                              direction: DismissDirection.endToStart,
+                            child: DismissbleWidget(
+                              item: e,
                               onDismissed: (direction) {
-                                if (direction == DismissDirection.endToStart) {}
-                                if (direction == DismissDirection.endToStart) {}
+                                homeCcontroller.dismissItem(
+                                            e.title!, direction) ==
+                                        DismissStatus.deleted
+                                    ? EasyLoading.showSuccess('Task Deteted')
+                                    : EasyLoading.showSuccess('Task Archived');
                               },
-                              background: Container(
-                                color: Colors.red.withOpacity(0.8),
-                                alignment: Alignment.centerRight,
-                                child: const Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(Icons.delete, color: Colors.white),
-                                    SizedBox(width: 10)
-                                  ],
-                                ),
-                              ),
                               child: Center(
                                 child: Padding(
                                   padding: EdgeInsets.symmetric(

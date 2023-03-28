@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:todo/data/models/task.dart';
@@ -6,8 +5,10 @@ import 'package:todo/data/services/storage/repository.dart';
 
 class HomeController extends GetxController {
   final TaskRepository taskRepository;
+
   HomeController({required this.taskRepository});
 
+  RxInt index = 0.obs;
   final tasks = <Task>[].obs;
   final formKey = GlobalKey<FormState>();
   final editController = TextEditingController();
@@ -136,6 +137,10 @@ class HomeController extends GetxController {
       dismissStatus = DismissStatus.deleted;
     }
     return dismissStatus;
+  }
+
+  changeIndex(int value) {
+    index.value = value;
   }
 }
 

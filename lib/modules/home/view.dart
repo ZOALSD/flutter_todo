@@ -16,45 +16,54 @@ class Home extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: ListView(
-          children: [
-            Padding(
-              padding: EdgeInsets.all(4.0.wp),
-              child: Text(
-                "My List",
-                style: TextStyle(
-                  fontSize: 24.0.sp,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            Obx(
-              () => GridView.count(
-                crossAxisCount: 2,
-                shrinkWrap: true,
-                physics: const ClampingScrollPhysics(),
+        child: Obx(
+          () => IndexedStack(
+            index: controller.index.value,
+            children: [
+              ListView(
                 children: [
-                  ...controller.tasks
-                      .map(
-                        (element) => LongPressDraggable(
-                          data: element,
-                          feedback: Opacity(
-                            opacity: 0.8,
-                            child: TaskCard(task: element),
-                          ),
-                          child: TaskCard(task: element),
-                          onDragStarted: () => controller.changeDeleting(true),
-                          onDraggableCanceled: (_, __) =>
-                              controller.changeDeleting(false),
-                          onDragEnd: (_) => controller.changeDeleting(false),
-                        ),
-                      )
-                      .toList(),
-                  AddCard()
+                  Padding(
+                    padding: EdgeInsets.all(4.0.wp),
+                    child: Text(
+                      "My List",
+                      style: TextStyle(
+                        fontSize: 24.0.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Obx(
+                    () => GridView.count(
+                      crossAxisCount: 2,
+                      shrinkWrap: true,
+                      physics: const ClampingScrollPhysics(),
+                      children: [
+                        ...controller.tasks
+                            .map(
+                              (element) => LongPressDraggable(
+                                data: element,
+                                feedback: Opacity(
+                                  opacity: 0.8,
+                                  child: TaskCard(task: element),
+                                ),
+                                child: TaskCard(task: element),
+                                onDragStarted: () =>
+                                    controller.changeDeleting(true),
+                                onDraggableCanceled: (_, __) =>
+                                    controller.changeDeleting(false),
+                                onDragEnd: (_) =>
+                                    controller.changeDeleting(false),
+                              ),
+                            )
+                            .toList(),
+                        AddCard()
+                      ],
+                    ),
+                  )
                 ],
               ),
-            )
-          ],
+            ],
+          ),
         ),
       ),
       floatingActionButton: DragTarget<Task>(
@@ -73,6 +82,28 @@ class Home extends GetView<HomeController> {
           EasyLoading.showSuccess("Task Deleted");
         },
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomNavigationBar(
+          currentIndex: controller.index.value,
+          onTap: (value) => controller.changeIndex(value),
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          items: const [
+            BottomNavigationBarItem(
+              label: 'Home',
+              icon: Padding(
+                padding: EdgeInsets.only(right: 15),
+                child: Icon(Icons.apps),
+              ),
+            ),
+            BottomNavigationBarItem(
+              label: 'report',
+              icon: Padding(
+                padding: EdgeInsets.only(left: 15),
+                child: Icon(Icons.data_usage),
+              ),
+            )
+          ]),
     );
   }
 }

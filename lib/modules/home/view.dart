@@ -7,6 +7,7 @@ import 'package:todo/modules/home/controller.dart';
 import 'package:todo/modules/home/widgets/add_card.dart';
 import 'package:todo/modules/home/widgets/add_task.dart';
 import 'package:todo/modules/home/widgets/task_card.dart';
+import 'package:todo/modules/report/report.dart';
 
 class Home extends GetView<HomeController> {
   // final homeController = Get.find<HomeController>();
@@ -62,6 +63,7 @@ class Home extends GetView<HomeController> {
                   )
                 ],
               ),
+              Report()
             ],
           ),
         ),

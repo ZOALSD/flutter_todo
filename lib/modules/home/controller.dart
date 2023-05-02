@@ -121,6 +121,13 @@ class HomeController extends GetxController {
     return count;
   }
 
+  int totalTask() {
+    int total = 0;
+    // tasks.where((p0) => p0.todo );
+
+    return total;
+  }
+
   DismissStatus dismissItem(
     String title,
     DismissDirection direction,

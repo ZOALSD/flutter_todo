@@ -21,8 +21,49 @@ class Home extends GetView<HomeController> {
           () => IndexedStack(
             index: controller.index.value,
             children: [
-              tasks(controller: controller),
-              Report(),
+              ListView(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(4.0.wp),
+                    child: Text(
+                      "My List",
+                      style: TextStyle(
+                        fontSize: 24.0.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Obx(
+                    () => GridView.count(
+                      crossAxisCount: 2,
+                      shrinkWrap: true,
+                      physics: const ClampingScrollPhysics(),
+                      children: [
+                        ...controller.tasks
+                            .map(
+                              (element) => LongPressDraggable(
+                                data: element,
+                                feedback: Opacity(
+                                  opacity: 0.8,
+                                  child: TaskCard(task: element),
+                                ),
+                                child: TaskCard(task: element),
+                                onDragStarted: () =>
+                                    controller.changeDeleting(true),
+                                onDraggableCanceled: (_, __) =>
+                                    controller.changeDeleting(false),
+                                onDragEnd: (_) =>
+                                    controller.changeDeleting(false),
+                              ),
+                            )
+                            .toList(),
+                        AddCard()
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              Report()
             ],
           ),
         ),

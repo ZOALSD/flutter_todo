@@ -7,6 +7,7 @@ import 'package:todo/modules/home/controller.dart';
 import 'package:todo/modules/home/widgets/add_card.dart';
 import 'package:todo/modules/home/widgets/add_task.dart';
 import 'package:todo/modules/home/widgets/task_card.dart';
+import 'package:todo/modules/report/report.dart';
 
 class Home extends GetView<HomeController> {
   // final homeController = Get.find<HomeController>();
@@ -20,48 +21,8 @@ class Home extends GetView<HomeController> {
           () => IndexedStack(
             index: controller.index.value,
             children: [
-              ListView(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.all(4.0.wp),
-                    child: Text(
-                      "My List",
-                      style: TextStyle(
-                        fontSize: 24.0.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  Obx(
-                    () => GridView.count(
-                      crossAxisCount: 2,
-                      shrinkWrap: true,
-                      physics: const ClampingScrollPhysics(),
-                      children: [
-                        ...controller.tasks
-                            .map(
-                              (element) => LongPressDraggable(
-                                data: element,
-                                feedback: Opacity(
-                                  opacity: 0.8,
-                                  child: TaskCard(task: element),
-                                ),
-                                child: TaskCard(task: element),
-                                onDragStarted: () =>
-                                    controller.changeDeleting(true),
-                                onDraggableCanceled: (_, __) =>
-                                    controller.changeDeleting(false),
-                                onDragEnd: (_) =>
-                                    controller.changeDeleting(false),
-                              ),
-                            )
-                            .toList(),
-                        AddCard()
-                      ],
-                    ),
-                  )
-                ],
-              ),
+              tasks(controller: controller),
+              Report(),
             ],
           ),
         ),
@@ -104,6 +65,59 @@ class Home extends GetView<HomeController> {
               ),
             )
           ]),
+    );
+  }
+}
+
+class tasks extends StatelessWidget {
+  const tasks({
+    super.key,
+    required this.controller,
+  });
+
+  final HomeController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: [
+        Padding(
+          padding: EdgeInsets.all(4.0.wp),
+          child: Text(
+            "My List",
+            style: TextStyle(
+              fontSize: 24.0.sp,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Obx(
+          () => GridView.count(
+            crossAxisCount: 2,
+            shrinkWrap: true,
+            physics: const ClampingScrollPhysics(),
+            children: [
+              ...controller.tasks
+                  .map(
+                    (element) => LongPressDraggable(
+                      data: element,
+                      feedback: Opacity(
+                        opacity: 0.8,
+                        child: TaskCard(task: element),
+                      ),
+                      child: TaskCard(task: element),
+                      onDragStarted: () => controller.changeDeleting(true),
+                      onDraggableCanceled: (_, __) =>
+                          controller.changeDeleting(false),
+                      onDragEnd: (_) => controller.changeDeleting(false),
+                    ),
+                  )
+                  .toList(),
+              AddCard()
+            ],
+          ),
+        )
+      ],
     );
   }
 }
